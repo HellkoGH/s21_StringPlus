@@ -267,3 +267,22 @@ char *s21_strpbrk(const char *str1, const char *str2) {
   return S21_NULL; 
 
 }
+
+// ===== 12. MEMCHR =====
+
+void *s21_memchr(const void *str, int c, s21_size n) {
+
+  const unsigned char *ustr = (const unsigned char *)str; 
+  unsigned char uc = c; 
+
+  s21_size i = 0; 
+  while (i < n) {
+    if (ustr[i] == uc) {
+      return (void *)&ustr[i]; 
+    }
+    i++;
+  }
+
+  return S21_NULL; 
+
+}

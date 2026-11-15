@@ -633,6 +633,44 @@ START_TEST(test_strpbrk_multiple_matches) {
 }
 END_TEST
 
+// -----> memchr 
+
+START_TEST(test_memchr_basic) {
+    ck_assert_ptr_eq(s21_memchr("hello world", 'w', 11), memchr("hello world", 'w', 11)); 
+}
+END_TEST
+
+START_TEST(test_memchr_no_match) {
+    ck_assert_ptr_eq(s21_memchr("hello", 'x', 5), memchr("hello", 'x', 5)); 
+}
+END_TEST
+
+START_TEST(test_memchr_first_byte) {
+    ck_assert_ptr_eq(s21_memchr("hello", 'h', 5), memchr("hello", 'h', 5)); 
+}
+END_TEST
+
+START_TEST(test_memchr_last_byte) {
+    ck_assert_ptr_eq(s21_memchr("hello", 'o', 5), memchr("hello", 'o', 5)); 
+}
+END_TEST
+
+START_TEST(test_memchr_zero_length) {
+    ck_assert_ptr_null(s21_memchr("hello", 'h', 0)); 
+}
+END_TEST
+
+START_TEST(test_memchr_null_terminator) {
+    ck_assert_ptr_eq(s21_memchr("hello", '\0', 6), memchr("hello", '\0', 6)); 
+}
+END_TEST
+
+START_TEST(test_memchr_unsigned_char) {
+    char str[] = {(char)0xFF, '\0'}; 
+    ck_assert_ptr_eq(s21_memchr(str, 255, 2), memchr(str, 255, 2)); 
+}
+END_TEST
+
 
 
 // ===== SUITE / TCASE ===== 
@@ -652,6 +690,7 @@ Suite *s21_string_suite(void) {
     TCase *tc_strtok = tcase_create("strtok_tests"); 
     TCase *tc_strcspn = tcase_create("strcspn_tests"); 
     TCase *tc_strpbrk = tcase_create("strpbrk_tests"); 
+    TCase *tc_memchr = tcase_create("memchr_tests"); 
 
     tcase_add_test(tc_strlen, test_strlen_basic); 
     tcase_add_test(tc_strlen, test_strlen_empty);
@@ -733,7 +772,16 @@ Suite *s21_string_suite(void) {
     tcase_add_test(tc_strpbrk, test_strpbrk_str1_empty); 
     tcase_add_test(tc_strpbrk, test_strpbrk_str2_empty); 
     tcase_add_test(tc_strpbrk, test_strpbrk_both_strs_empty); 
-    tcase_add_test(tc_strpbrk, test_strpbrk_multiple_matches); 
+    tcase_add_test(tc_strpbrk, test_strpbrk_multiple_matches);
+
+    tcase_add_test(tc_memchr, test_memchr_basic);  
+    tcase_add_test(tc_memchr, test_memchr_no_match); 
+    tcase_add_test(tc_memchr, test_memchr_first_byte); 
+    tcase_add_test(tc_memchr, test_memchr_last_byte); 
+    tcase_add_test(tc_memchr, test_memchr_zero_length); 
+    tcase_add_test(tc_memchr, test_memchr_null_terminator); 
+    tcase_add_test(tc_memchr, test_memchr_unsigned_char); 
+    
 
     suite_add_tcase(suite, tc_strlen); 
     suite_add_tcase(suite, tc_strchr); 
@@ -746,6 +794,7 @@ Suite *s21_string_suite(void) {
     suite_add_tcase(suite, tc_strtok); 
     suite_add_tcase(suite, tc_strcspn); 
     suite_add_tcase(suite, tc_strpbrk);  
+    suite_add_tcase(suite, tc_memchr);  
 
     return suite; 
 }
