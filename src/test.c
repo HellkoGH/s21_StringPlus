@@ -712,6 +712,70 @@ START_TEST(test_memcmp_after_null) {
 }
 END_TEST
 
+// -----> memcpy 
+
+START_TEST(test_memcpy_basic) {
+
+    char actual[10] = {0}; 
+    char expected[10] = {0}; 
+
+    s21_memcpy(actual, "Hello", 5); 
+    memcpy(expected, "Hello", 5); 
+
+    ck_assert_mem_eq(actual, expected, 5); 
+
+}
+END_TEST
+
+START_TEST(test_memcpy_partial_copy) {
+
+    char actual[10] = {0}; 
+    char expected[10] = {0}; 
+
+    s21_memcpy(actual, "Hello", 3); 
+    memcpy(expected, "Hello", 3); 
+
+    ck_assert_mem_eq(actual, expected, 3); 
+
+}
+END_TEST
+
+START_TEST(test_memcpy_zero_bytes) {
+    
+    char actual[10] = "Original"; 
+    char expected[10] = "Original"; 
+
+    s21_memcpy(actual, "Hello", 0); 
+    memcpy(expected, "Hello", 0); 
+
+    ck_assert_mem_eq(actual, expected, 10); 
+
+}
+END_TEST
+
+START_TEST(test_memcpy_null_terminator) {
+
+    char actual[10] = {0}; 
+    char expected[10] = {0}; 
+
+    char str[] = {'A', '\0', 'S'}; 
+
+    s21_memcpy(actual, str, 3); 
+    memcpy(expected, str, 3); 
+
+    ck_assert_mem_eq(actual, expected, 3); 
+
+}
+END_TEST
+
+START_TEST(test_memcpy_return_pointer) {
+
+    char actual[10] = {0}; 
+
+    ck_assert_ptr_eq(s21_memcpy(actual, "Hello", 5), actual); 
+
+}
+END_TEST
 
 
 // ===== SUITE / TCASE ===== 
@@ -733,6 +797,7 @@ Suite *s21_string_suite(void) {
     TCase *tc_strpbrk = tcase_create("strpbrk_tests"); 
     TCase *tc_memchr = tcase_create("memchr_tests"); 
     TCase *tc_memcmp = tcase_create("memcmp_tests"); 
+    TCase *tc_memcpy = tcase_create("memcpy_tests"); 
 
     tcase_add_test(tc_strlen, test_strlen_basic); 
     tcase_add_test(tc_strlen, test_strlen_empty);
@@ -829,7 +894,13 @@ Suite *s21_string_suite(void) {
     tcase_add_test(tc_memcmp, test_memcmp_last_byte);   
     tcase_add_test(tc_memcmp, test_memcmp_zero_length); 
     tcase_add_test(tc_memcmp, test_memcmp_unsigned_char); 
-    tcase_add_test(tc_memcmp, test_memcmp_after_null); 
+    tcase_add_test(tc_memcmp, test_memcmp_after_null);
+    
+    tcase_add_test(tc_memcpy, test_memcpy_basic);
+    tcase_add_test(tc_memcpy, test_memcpy_partial_copy);
+    tcase_add_test(tc_memcpy, test_memcpy_zero_bytes);  
+    tcase_add_test(tc_memcpy, test_memcpy_null_terminator); 
+    tcase_add_test(tc_memcpy, test_memcpy_return_pointer);  
     
 
     suite_add_tcase(suite, tc_strlen); 
@@ -845,6 +916,7 @@ Suite *s21_string_suite(void) {
     suite_add_tcase(suite, tc_strpbrk);  
     suite_add_tcase(suite, tc_memchr);  
     suite_add_tcase(suite, tc_memcmp); 
+    suite_add_tcase(suite, tc_memcpy); 
 
     return suite; 
 }

@@ -308,3 +308,17 @@ int s21_memcmp(const void *str1, const void *str2, s21_size n) {
   return 0; 
 
 }
+
+// ===== 14. MEMCPY ===== 
+
+void *s21_memcpy(void *dest, const void *src, s21_size n) {
+
+  unsigned char *udest = dest; 
+  const unsigned char *usrc = (const unsigned char *)src; 
+
+  for (s21_size i = 0; i < n; i++) {
+    udest[i] = usrc[i]; 
+  }
+
+  return dest; 
+}
