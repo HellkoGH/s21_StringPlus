@@ -286,3 +286,25 @@ void *s21_memchr(const void *str, int c, s21_size n) {
   return S21_NULL; 
 
 }
+
+// ===== 13. MEMCMP =====
+
+int s21_memcmp(const void *str1, const void *str2, s21_size n) {
+
+  const unsigned char *ustr1 = (const unsigned char *)str1; 
+  const unsigned char *ustr2 = (const unsigned char *)str2; 
+
+  s21_size i = 0; 
+  while (i < n) {
+
+    if (ustr1[i] != ustr2[i]) {
+      return ustr1[i] - ustr2[i]; 
+    }
+
+    i++; 
+
+  }
+
+  return 0; 
+
+}
