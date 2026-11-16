@@ -777,6 +777,66 @@ START_TEST(test_memcpy_return_pointer) {
 }
 END_TEST
 
+// -----> memset 
+
+START_TEST(test_memset_basic) {
+
+    char actual[10] = {0}; 
+    char expected[10] = {0}; 
+
+    s21_memset(actual, 'A', 5); 
+    memset(expected, 'A', 5); 
+
+    ck_assert_mem_eq(actual, expected, 10); 
+
+}
+END_TEST
+
+START_TEST(test_memset_zero_bytes) {
+
+    char actual[10] = "Original"; 
+    char expected[10] = "Original"; 
+
+    s21_memset(actual, 'A', 0); 
+
+    ck_assert_mem_eq(actual, expected, 10); 
+
+}
+END_TEST
+
+START_TEST(test_memset_null_byte) {
+
+    char actual[10] = {0}; 
+    char expected[10] = {0}; 
+
+    s21_memset(actual, '\0', 5); 
+    memset(expected, '\0', 5); 
+
+    ck_assert_mem_eq(actual, expected, 10); 
+
+}
+END_TEST
+
+START_TEST(test_memset_return_pointer) {
+
+    char actual[10] = {0}; 
+
+    ck_assert_ptr_eq(s21_memset(actual, 'X', 5), actual); 
+
+}
+END_TEST
+
+START_TEST(test_memset_unsigned_char) {
+    char actual[5] = {0};
+    char expected[5] = {0};
+
+    s21_memset(actual, 255, 5);
+    memset(expected, 255, 5);
+
+    ck_assert_mem_eq(actual, expected, 5);
+}
+END_TEST
+
 
 // ===== SUITE / TCASE ===== 
 
@@ -798,6 +858,7 @@ Suite *s21_string_suite(void) {
     TCase *tc_memchr = tcase_create("memchr_tests"); 
     TCase *tc_memcmp = tcase_create("memcmp_tests"); 
     TCase *tc_memcpy = tcase_create("memcpy_tests"); 
+    TCase *tc_memset = tcase_create("memset_tests"); 
 
     tcase_add_test(tc_strlen, test_strlen_basic); 
     tcase_add_test(tc_strlen, test_strlen_empty);
@@ -900,7 +961,13 @@ Suite *s21_string_suite(void) {
     tcase_add_test(tc_memcpy, test_memcpy_partial_copy);
     tcase_add_test(tc_memcpy, test_memcpy_zero_bytes);  
     tcase_add_test(tc_memcpy, test_memcpy_null_terminator); 
-    tcase_add_test(tc_memcpy, test_memcpy_return_pointer);  
+    tcase_add_test(tc_memcpy, test_memcpy_return_pointer);
+    
+    tcase_add_test(tc_memset, test_memset_basic); 
+    tcase_add_test(tc_memset, test_memset_null_byte); 
+    tcase_add_test(tc_memset, test_memset_zero_bytes); 
+    tcase_add_test(tc_memset, test_memset_return_pointer); 
+    tcase_add_test(tc_memset, test_memset_unsigned_char); 
     
 
     suite_add_tcase(suite, tc_strlen); 
@@ -917,6 +984,7 @@ Suite *s21_string_suite(void) {
     suite_add_tcase(suite, tc_memchr);  
     suite_add_tcase(suite, tc_memcmp); 
     suite_add_tcase(suite, tc_memcpy); 
+    suite_add_tcase(suite, tc_memset); 
 
     return suite; 
 }

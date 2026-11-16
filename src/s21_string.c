@@ -322,3 +322,19 @@ void *s21_memcpy(void *dest, const void *src, s21_size n) {
 
   return dest; 
 }
+
+
+// ===== 15. MEMSET =====
+
+void *s21_memset(void *str, int c, s21_size n) {
+
+  unsigned char *ustr = str; 
+  unsigned char uc = c; 
+
+  for (s21_size i = 0; i < n; i++) {
+    ustr[i] = uc; 
+  }
+
+  return str; 
+
+}
